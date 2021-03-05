@@ -1,49 +1,50 @@
 import discord
+import random
 from discord.ext import commands
 from datetime import date, datetime
 bot = commands.Bot(command_prefix="!", description="Devant la librarie")
 # you understand pretty explicit
 
-mon4A = ["écoute moi bien", "tu me donnes ton horaire tout de suite", "j'ai ta mere en otage", "le bot est off mais j'ai interet a l'avoir demain", "vous avez compris la 4A ?", "", "", ""]
-tue4A = ["", "", "", "", "", "Allemand/**étude**", "", ""]
-wed4A = ["", "", "", "", "", "**Rien**", "**Rien**", "**Rien**"]
-thu4A = ["", "", "", "Allemand/**étude**", "", "", "", ""]
-fri4A = ["", "", "", "", "", "", "Allemand/**étude**", "Allemand/**étude**"]
+mon4A = ["Géographie", "Math", "Sciences", "Anglais", "Français","Religion","Anglais", "Math"]
+tue4A = ["Histoire", "Religion", "Option fils de pute", "Math", "Math", "Langue 2", "Info/étude", "Info/étude"]
+wed4A = ["Math", "Français", "Français", "Option fils de pute", "Langue 1", "Rien", "Rien", "Rien"]
+thu4A = ["Histoire", "Sciences", "Français", "Langue 2", "Sport", "Langue 1", "Info/étude", "Info/étude"]
+fri4A = ["étude", "Géographie", "Sciences", "Français", "Langue 1", "Sport", "Allemand/étude", "Allemand/étude"]
 the4A = [mon4A, tue4A, wed4A, thu4A, fri4A, mon4A, mon4A]
 
-mon4B = ["Latin/**étude**", "**Sport intensif**", "**Sport intensif**", "Anglais", "Sciences", "Latin/**étude**", "Religion", "Géographie"]
-tue4B = ["Math", "Histoire", "Math", "Sciences", "Anglais", "Allemand/**étude**", "Français", "Français"]
-wed4B = ["Sciences", "Math", "Anglais", "Latin/**étude**", "Anglais", "**Rien**", "**Rien**", "**Rien**"]
-thu4B = ["Math", "Histoire", "Géographie", "Allemand/**étude**", "Français", "Français", "Math", "**étude**"]
-fri4B = ["Labo", "Labo", "Français", "Anglais", "Latin/**étude**", "Religion", "Allemand/**étude**", "Allemand/**étude**"]
+mon4B = ["Latin/étude", "Sport intensif", "Sport intensif", "Anglais", "Sciences", "Latin/étude", "Religion", "Géographie/Anglais"]
+tue4B = ["Math", "Histoire/Anglais", "Math", "Sciences", "Anglais/Histoire", "Allemand/étude", "Français", "Français"]
+wed4B = ["Sciences", "Math", "Anglais/Histoire", "Latin/étude", "Anglais/Géographie", "Rien", "Rien", "Rien"]
+thu4B = ["Math", "Histoire/Anglais", "Géographie/Anglais", "Allemand/étude", "Français", "Français", "Math", "étude"]
+fri4B = ["Labo", "Labo", "Français", "Anglais", "Latin/étude", "Religion", "Allemand/étude", "Allemand/étude"]
 the4B = [mon4B, tue4B, wed4B, thu4B, fri4B, mon4B, mon4B]
 
-mon4D = ["Latin/**étude**", "Math", "Math", "Géographie", "**étude**", "Latin/**étude**", "Sciences", "Anglais"]
-tue4D = ["Math", "Anglais", "Français", "Religion", "Histoire", "Allemand/**étude**", "Sport/Info", "Sport/Info"]
-wed4D = ["Religion", "Français", "Histoire", "Latin/**étude**", "Géographie", "**Rien**", "**Rien**", "**Rien**"]
-thu4D = ["Math", "Anglais", "Anglais", "Allemand/**étude**", "**Faire des squats**", "Français", "Science", "Français"]
-fri4D = ["Sciences", "Français", "Math", "Anglais", "Latin/**étude**", "**Faire des pompes**", "Allemand/**étude**", "Allemand/**étude**"]
+mon4D = ["Latin/étude", "Math", "Math", "Géographie", "étude", "Latin/étude", "Sciences", "Anglais"]
+tue4D = ["Math", "Anglais", "Français", "Religion", "Histoire", "Allemand/étude", "Sport/Info", "Sport/Info"]
+wed4D = ["Religion", "Français", "Histoire", "Latin/étude", "Géographie", "Rien", "Rien", "Rien"]
+thu4D = ["Math", "Anglais", "Anglais", "Allemand/étude", "Faire des squats", "Français", "Science", "Français"]
+fri4D = ["Sciences", "Français", "Math", "Anglais", "Latin/étude", "Faire des pompes", "Allemand/étude", "Allemand/étude"]
 the4D = [mon4D, tue4D, wed4D, thu4D, fri4D, mon4D, mon4D]
 
 mon4E = ["Math", "**Faire la saucisse**", "**Faire des roulades à la zelda", "Géographie", "Religion", "Sciences", "Sciences", "Anglais"]
-tue4E = ["Français", "Anglais", "Sciences", "Français", "Histoire", "Allemand/**étude**", "**étude**", "**étude**"]
-wed4E = ["Français", "Math", "Histoire", "Sciences", "Géographie", "**Rien**", "**Rien**", "**Rien**"]
-thu4E = ["**étude**", "Anglais", "Anglais", "Allemand/**étude**", "Religion", "Math", "Informatique/**étude**", "Informatique/**étude**"]
-fri4E = ["Français", "Math", "Math", "Anglais", "Sciences", "Français", "Allemand/**étude**", "Allemand/**étude**"]
+tue4E = ["Français", "Anglais", "Sciences", "Français", "Histoire", "Allemand/étude", "étude", "étude"]
+wed4E = ["Français", "Math", "Histoire", "Sciences", "Géographie", "Rien", "Rien", "Rien"]
+thu4E = ["étude", "Anglais", "Anglais", "Allemand/étude", "Religion", "Math", "Informatique/étude", "Informatique/étude"]
+fri4E = ["Français", "Math", "Math", "Anglais", "Sciences", "Français", "Allemand/étude", "Allemand/étude"]
 the4E = [mon4E, tue4E, wed4E, thu4E, fri4E, mon4E, mon4E]
 
-mon4F = ["Religion", "Histoire", "Français", "Français", "Math", "Sciences", "Sciences", "**étude**"]
-tue4F = ["Histoire", "Anglais", "Sciences", "**Faire des abdos**", "**Muscler son boule**", "Allemand/**étude**", "**étude**", "**étude**"]
-wed4F = ["Anglais", "Math", "Math", "Sciences", "Français", "**Rien**", "**Rien**", "**Rien**"]
-thu4F = ["Géographie", "Français", "Anglais", "Allemand/**étude**", "Religion", "Math", "Informatique", "Informatique"]
+mon4F = ["Religion", "Histoire", "Français", "Français", "Math", "Sciences", "Sciences", "étude"]
+tue4F = ["Histoire", "Anglais", "Sciences", "**Faire des abdos**", "**Muscler son boule**", "Allemand/étude", "étude", "étude"]
+wed4F = ["Anglais", "Math", "Math", "Sciences", "Français", "Rien", "Rien", "Rien"]
+thu4F = ["Géographie", "Français", "Anglais", "Allemand/étude", "Religion", "Math", "Informatique", "Informatique"]
 fri4F = ["Anglais", "Anglais", "Math", "Géographie", "Sciences", "Français", "Allemand/**étude", "Allemand/étude**"]
 the4F = [mon4F, tue4F, wed4F, thu4F, fri4F, mon4F, mon4F]
 
-mon4G = ["**étude**", "Comms", "Comms", "**Sport**", "**Soulever des ~~bites~~ poids**", "Anglais", "Math", "Math"]
-tue4G = ["Science", "AHV", "Rel", "\"**Sport**\"", "\"**Sport**\"", "Sciences", "Histoire-Géo", "**Flute**"]
-wed4G = ["IVP", "EVS", "EVS", "Anglais", "**étude**", "**Rien**", "**Rien**", "**Rien**"]
+mon4G = ["étude", "Comms", "Comms", "**Sport**", "Soulever des ~~bites~~ poids", "Anglais", "Math", "Math"]
+tue4G = ["Science", "AHV", "Rel", "\"**Sport**\"", "\"**Sport**\"", "Sciences", "Histoire-Géo", "Flute"]
+wed4G = ["IVP", "EVS", "EVS", "Anglais", "étude", "Rien", "Rien", "Rien"]
 thu4G = ["AHV", "Français", "Français", "**Kazoo**", "Religion", "Math", "Anglais", "Histoire-Géo"]
-fri4G = ["AHV", "IVP", "IVP", "Math", "Français", "Français", "Anglais", "**étude**"]
+fri4G = ["AHV", "IVP", "IVP", "Math", "Français", "Français", "Anglais", "étude"]
 the4G = [mon4G, tue4G, wed4G, thu4G, fri4G, mon4G, mon4G]
 # array of timetable by classes adapt at your own need i personnaly have a classes each 50 minutes
 schoolTimetableArray = [the4A, the4B, the4D, the4E, the4F, the4G]
@@ -52,7 +53,7 @@ schoolTimetableArray = [the4A, the4B, the4D, the4E, the4F, the4G]
 @bot.event
 async def on_ready():  # print in the console when bot wake up
     print("J'suis devant la libraire")
-    await bot.change_presence(activity=discord.Game("péter sur des minorités"))
+    await bot.change_presence(activity=discord.Game("invoquer skouizi"))
 
 @commands.guild_only()
 @bot.command(name="horaire")
@@ -60,8 +61,19 @@ async def timetable (ctx):
     dayWeek = date.today()  # get day as a string
     current_day = date.weekday(dayWeek)  # get day in integrer 0=monday,1=tuesday,...
     nowPreciseDate = datetime.now()  # get exact date with seconds
-    hour = int(nowPreciseDate.strftime("%H"))  #- 1 # get hours as an int I REMOVE ONE HOUR CAUSE OF A DAMN RASPBERRY PI
+    hour = int(nowPreciseDate.strftime("%H")) + 1
     minute = int(nowPreciseDate.strftime("%M"))  # get minutes as an int
+    sendHoraire(ctx,minute,hour,current_day)
+
+@commands.guild_only()
+@bot.command(name="horairedemain")
+async def timetableTomorow (ctx):
+    dayWeek = date.today()  # get day as a string
+    current_day = date.weekday(dayWeek) + 1  # get day in integrer 0=monday,1=tuesday,...
+    #BUT to get tomorow's i add a day
+    sendHoraire(ctx,0,6,current_day)
+
+def sendHoraire(ctx,minute,hour,current_day):
 
     schoolRole = 0  # need to be referenced before assignement
     role4A = discord.utils.get(ctx.guild.roles, name="4A")
@@ -73,8 +85,8 @@ async def timetable (ctx):
     schoolRoleArray = [role4A, role4B, role4D, role4E, role4F, role4G]
     for ima in range(6):
         if schoolRoleArray[ima] in ctx.author.roles:
-            schoolRole = ima
-            #  to get the class the user is in here i have set it to 6 because i have 6 possible classes
+            schoolRole = ima #  to get the class the user is in, here i have set it to 6 because i have 6 possible classes
+
     if current_day > 4:  #in case we are the weekend and need monday courses
         period = 0
         hour = 6
@@ -96,20 +108,42 @@ async def timetable (ctx):
         period = 6
     elif (hour == 15 and minute > 5) or (hour == 15 and minute <= 55):
         period = 7
-    elif hour > 16:
+    elif hour >= 16:
         period = 0
         current_day += 1
     else:
         period = 0
-        current_day = 6  # all of this is used to get what course you should be having
-                         # /!\ i recommend puting lunchtime into it
-    print("Jour:", {current_day}, "Cours:", {period}, "Heure", {hour}, "Minutes:", {minute}, "Classe:", {schoolRole})  # made for debug
+        current_day = 6
+        # all of this is used to get what course you should be having
+        # /!\ i recommend putting lunchtime into it
+    print("Jour:", current_day, "Cours:", period, "Heure", hour, "Minutes:", minute, "Classe:", schoolRole)  # made for debug
     for jour in range(7):  # because there are 7 day in a week
         if current_day == jour:  #this way i use the day i got as an useful variable
             theLeftOfUs = -1  #value to increment to give us the remaining courses
-            toPrint = ("Tes prochains cours sont dans :")
-            for heurePeriod in range(8-period): #beacause i only want the bot to print today's remaining courses
+            toPrint = ("```Tes prochains cours:")
+            for heurePeriod in range(8-period): #because i only want the bot to print today's remaining courses
                 theLeftOfUs += 1
-                toPrint += ("\n" + str(heurePeriod+1) +"h " + schoolTimetableArray[schoolRole][current_day][period + theLeftOfUs])
+                toPrint += ("\n" + str(heurePeriod+period+1) +"h " + schoolTimetableArray[schoolRole][current_day][period + theLeftOfUs])
+            toPrint += ("\nOn est à "+pourcentage(hour,minute)+"% de la journée scolaire et "+str(round((hour*60+minute)/1440 * 100,1))+"% de la journée```")
             await ctx.send(toPrint)
-bot.run("YourDiscordToken")
+
+def pourcentage(h,m):
+    toPourcent = h * 60 + m
+    if toPourcent <= 480:
+        return str(0)
+    elif 480 > toPourcent or toPourcent < 955:
+        toPourcent = (toPourcent - 480)/475 * 100
+        return str(round(toPourcent,1))
+    else:
+        return str(100)
+
+@bot.command(aliases=["orraire","horraire","orairre","horairre","horzire","orair","oraire","horair","haraire","horarie","hroaire","hraire"])
+async def x (ctx):
+    insultes = ["Apprend à écrire gros con","**issou**","Tu écris comme Prem","Y'a de l'autisme dans l'air la non ?",
+                "quelle orthographe dis donc","Pire que Manon Boegen","ew","https://www.jaitoutcompris.com/rubriques/dictionnaire.php",
+                "www.amazon.fr/Dictionnaire-Robert-Junior-illustré-CE-CM-6e/dp/2321015160/ref=sr_1_1",
+                "Tu sais combien de temps ça ma pris pour codé tout ça ? moins que ça t'aurait pris pour corriger ce message",
+                "Je te chie dessus depuis l'espace","kinda cringe bro","Mec tu me fais quoi là"]
+    await ctx.send(random.choice(insultes))
+
+bot.run("")

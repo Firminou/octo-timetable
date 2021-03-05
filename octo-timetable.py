@@ -55,23 +55,16 @@ async def on_ready():  # print in the console when bot wake up
     print("J'suis devant la libraire")
     await bot.change_presence(activity=discord.Game("invoquer skouizi"))
 
-@commands.guild_only()
-@bot.command(name="horaire")
-async def timetable (ctx):
-    dayWeek = date.today()  # get day as a string
-    current_day = date.weekday(dayWeek)  # get day in integrer 0=monday,1=tuesday,...
-    nowPreciseDate = datetime.now()  # get exact date with seconds
-    hour = int(nowPreciseDate.strftime("%H")) + 1
-    minute = int(nowPreciseDate.strftime("%M"))  # get minutes as an int
-    sendHoraire(ctx,minute,hour,current_day)
 
-@commands.guild_only()
-@bot.command(name="horairedemain")
-async def timetableTomorow (ctx):
-    dayWeek = date.today()  # get day as a string
-    current_day = date.weekday(dayWeek) + 1  # get day in integrer 0=monday,1=tuesday,...
-    #BUT to get tomorow's i add a day
-    sendHoraire(ctx,0,6,current_day)
+def pourcentage(h,m):
+    toPourcent = h * 60 + m
+    if toPourcent <= 480:
+        return str(0)
+    elif 480 > toPourcent or toPourcent < 955:
+        toPourcent = (toPourcent - 480)/475 * 100
+        return str(round(toPourcent,1))
+    else:
+        return str(100)
 
 def sendHoraire(ctx,minute,hour,current_day):
 
@@ -125,17 +118,25 @@ def sendHoraire(ctx,minute,hour,current_day):
                 theLeftOfUs += 1
                 toPrint += ("\n" + str(heurePeriod+period+1) +"h " + schoolTimetableArray[schoolRole][current_day][period + theLeftOfUs])
             toPrint += ("\nOn est à "+pourcentage(hour,minute)+"% de la journée scolaire et "+str(round((hour*60+minute)/1440 * 100,1))+"% de la journée```")
-            await ctx.send(toPrint)
+            return toPrint
 
-def pourcentage(h,m):
-    toPourcent = h * 60 + m
-    if toPourcent <= 480:
-        return str(0)
-    elif 480 > toPourcent or toPourcent < 955:
-        toPourcent = (toPourcent - 480)/475 * 100
-        return str(round(toPourcent,1))
-    else:
-        return str(100)
+@commands.guild_only()
+@bot.command(name="horaire")
+async def timetable (ctx):
+    dayWeek = date.today()  # get day as a string
+    current_day = date.weekday(dayWeek)  # get day in integrer 0=monday,1=tuesday,...
+    nowPreciseDate = datetime.now()  # get exact date with seconds
+    hour = int(nowPreciseDate.strftime("%H")) + 1
+    minute = int(nowPreciseDate.strftime("%M"))  # get minutes as an int
+    await ctx.send(sendHoraire(ctx,minute,hour,current_day))
+
+@commands.guild_only()
+@bot.command(name="horairedemain")
+async def timetableTomorow (ctx):
+    dayWeek = date.today()  # get day as a string
+    current_day = date.weekday(dayWeek) + 1  # get day in integrer 0=monday,1=tuesday,...
+    #BUT to get tomorow's i add a day
+    await ctx.send(sendHoraire(ctx,0,6,current_day))
 
 @bot.command(aliases=["orraire","horraire","orairre","horairre","horzire","orair","oraire","horair","haraire","horarie","hroaire","hraire"])
 async def x (ctx):

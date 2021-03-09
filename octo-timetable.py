@@ -131,21 +131,21 @@ async def timetable (ctx):
     await ctx.send(sendHoraire(ctx,minute,hour,current_day))
 
 args = "" # I define args to use it in "horairejour"
+
+jour_semaine = ["lundi", "mardi", "mercredi", "jeudi", "vendredi", "samedi", "dimanche"]
 @commands.guild_only()
 @bot.command(name="horairejour")
 async def timetableTomorow (ctx, args: str):
-    if (args.lower() == "lundi"): args_to_int = 0 #I'm checking each possible day of the week
-    elif (args.lower() == "mardi"): args_to_int = 1
-    elif (args.lower() == "mercredi"): args_to_int = 2
-    elif (args.lower() == "jeudi"): args_to_int = 3
-    elif (args.lower() == "vendredi"): args_to_int = 4
-    elif (args.lower() == "samedi" or args.lower() == "vendredi"): 
-        await ctx.send("Aujourd'hui y'a pas école, **gros con**")
-        args_to_int = 5
-    else: 
-        await ctx.send("Alors, on connait pas les jours de la semaine") 
-        args_to_int = 5
-    if(args_to_int != 5): await ctx.send(sendHoraire(ctx,0,6,args_to_int))
+    i = 0 #i = increment
+    if(jour_semaine[6] == args or jour_semaine[7] == args): await ctx.send("Sérieux ? **Grosse merde**")
+    else:
+        for i in range(5): #I'm checking each possible day of the week
+            if (args.lower() == jour_semaine[i]): 
+                args_to_int = i
+                await ctx.send(sendHoraire(ctx,0,6,args_to_int))
+                i += 1
+            elif (i > 5): await ctx.send("T'es vraiment **trop con**") 
+            
 
 @bot.command(aliases=["orraire","horraire","orairre","horairre","horzire","orair","oraire","horair","haraire","horarie","hroaire","hraire",
 "orrairejour","horrairejour","orairrejour","horairrejour","horzirejour","orairjour","orairejour","horairjour","harairejour","horariejour","hroairejour","hrairefour"])

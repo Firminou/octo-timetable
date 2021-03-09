@@ -130,15 +130,25 @@ async def timetable (ctx):
     minute = int(nowPreciseDate.strftime("%M"))  # get minutes as an int
     await ctx.send(sendHoraire(ctx,minute,hour,current_day))
 
-@commands.guild_only()
-@bot.command(name="horairedemain")
-async def timetableTomorow (ctx):
-    dayWeek = date.today()  # get day as a string
-    current_day = date.weekday(dayWeek) + 1  # get day in integrer 0=monday,1=tuesday,...
-    #BUT to get tomorow's i add a day
-    await ctx.send(sendHoraire(ctx,0,6,current_day))
+args = "" # I define args to use it in "horairejour"
 
-@bot.command(aliases=["orraire","horraire","orairre","horairre","horzire","orair","oraire","horair","haraire","horarie","hroaire","hraire"])
+jour_semaine = ["lundi", "mardi", "mercredi", "jeudi", "vendredi", "samedi", "dimanche"]
+@commands.guild_only()
+@bot.command(name="horairejour")
+async def timetableTomorow (ctx, args: str):
+    i = 0 #i = increment
+    if(jour_semaine[6] == args or jour_semaine[7] == args): await ctx.send("Sérieux ? **Grosse merde**")
+    else:
+        for i in range(5): #I'm checking each possible day of the week
+            if (args.lower() == jour_semaine[i]): 
+                args_to_int = i
+                await ctx.send(sendHoraire(ctx,0,6,args_to_int))
+                i += 1
+            elif (i > 5): await ctx.send("T'es vraiment **trop con**") 
+            
+
+@bot.command(aliases=["orraire","horraire","orairre","horairre","horzire","orair","oraire","horair","haraire","horarie","hroaire","hraire",
+"orrairejour","horrairejour","orairrejour","horairrejour","horzirejour","orairjour","orairejour","horairjour","harairejour","horariejour","hroairejour","hrairefour"])
 async def x (ctx):
     insultes = ["Apprend à écrire gros con","**issou**","Tu écris comme Prem","Y'a de l'autisme dans l'air la non ?",
                 "quelle orthographe dis donc","Pire que Manon Boegen","ew","https://www.jaitoutcompris.com/rubriques/dictionnaire.php",

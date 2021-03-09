@@ -137,7 +137,7 @@ jour_semaine = ["lundi", "mardi", "mercredi", "jeudi", "vendredi", "samedi", "di
 @bot.command(name="horairejour")
 async def timetableTomorow (ctx, args: str):
     i = 0 #i = increment
-    if(jour_semaine[6] == args or jour_semaine[7] == args): await ctx.send("Sérieux ? **Grosse merde**")
+    if(jour_semaine[5] == args or jour_semaine[6] == args): await ctx.send("Sérieux ? **Grosse merde**")
     else:
         for i in range(5): #I'm checking each possible day of the week
             if (args.lower() == jour_semaine[i]): 

@@ -5,6 +5,14 @@ from datetime import date, datetime
 import yaml
 bot = commands.Bot(command_prefix="!", description="Devant la librarie")
 
+#We load the config
+classes = yaml.load(open("config.yaml"), Loader=yaml.FullLoader).get("classes")
+hourList = yaml.load(open("config.yaml"), Loader=yaml.FullLoader).get("hours")
+minutesList = yaml.load(open("config.yaml"), Loader=yaml.FullLoader).get("minutes")
+
+
+
+
 mon4A = ["Géographie", "Math", "Sciences", "Anglais", "Français", "Religion", "Anglais", "Math"]
 tue4A = ["Histoire", "Religion", "Option fils de pute", "Math", "Math", "Langue 2", "Info/étude", "Info/étude"]
 wed4A = ["Math", "Français", "Français", "Option fils de pute", "Langue 1", "Rien", "Rien", "Rien"]
@@ -72,12 +80,12 @@ def pourcentage():
 
 def sendHoraire(ctx, minute, hour, current_day):
     schoolRole = 0  # need to be referenced before assignement
-    role4A = discord.utils.get(ctx.guild.roles, name="4A")
-    role4B = discord.utils.get(ctx.guild.roles, name="4B")
-    role4D = discord.utils.get(ctx.guild.roles, name="4D")
-    role4E = discord.utils.get(ctx.guild.roles, name="4E")
-    role4F = discord.utils.get(ctx.guild.roles, name="4F")
-    role4G = discord.utils.get(ctx.guild.roles, name="4G")
+    role4A = discord.utils.get(ctx.guild.roles, name=classes[0]) #We use as names "classes[]" which was loaded from config.yaml
+    role4B = discord.utils.get(ctx.guild.roles, name=classes[1])
+    role4D = discord.utils.get(ctx.guild.roles, name=classes[2])
+    role4E = discord.utils.get(ctx.guild.roles, name=classes[3])
+    role4F = discord.utils.get(ctx.guild.roles, name=classes[4])
+    role4G = discord.utils.get(ctx.guild.roles, name=classes[5])
     schoolRoleArray = [role4A, role4B, role4D, role4E, role4F, role4G]
     for ima in range(6):
         if schoolRoleArray[ima] in ctx.author.roles:
@@ -94,8 +102,6 @@ def sendHoraire(ctx, minute, hour, current_day):
         period = 0
     else:
         incHour = 0  # incrementation of this value in the while to use it properly
-        hourList = [8, 8, 9, 10, 11, 12, 13, 14, 15]
-        minuteList = [00, 50, 40, 30, 35, 25, 25, 15, 5, 55]
         while period == -1:
             if hour == hourList[incHour] and minute > minuteList[incHour] or hour == hourList[incHour + 1] and minute <= \
                     minuteList[incHour + 1]:

@@ -1,0 +1,40 @@
+# This is the main configuration file
+# For further info you can refer yourself to our wiki
+#
+# This is the base pattern of a day of courses :
+# 3 Hours of courses - 15min of break - 2 Hours of courses - 1 Hour of lunchtime - 3 Hour of courses
+#
+#
+classes: #insert the (exact) names of your classes roles
+    - 4A
+    - 4B
+    - 4C
+    - 4D
+    - 4E
+    - 4F
+    - 4G
+
+hours:
+    
+    - 8 #insert the hour at which your first course start
+    - 8 #insert the hour which your second course start
+    - 9 #...
+    - 10
+    - 11
+    - 12 #insert the start hour of your lunchtime
+    - 13 #insert the end hour of your lunchtime
+    - 14
+    - 15
+    - 15 #insert the hour at which your school closes
+    
+minutes:
+    - 00 #insert the minute at which your first course start, it's exactly the same principle as indicated in hours section.
+    - 50 #insert the minute which your course begins
+    - 40 #...  
+    - 45 
+    - 35
+    - 25 #insert the start minute of your lunchtime
+    - 25 #insert the end minute of your lunchtime
+    - 15
+    - 05
+    - 55 #insert the minute at which your school closes

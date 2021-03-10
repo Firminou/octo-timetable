@@ -2,8 +2,8 @@ import discord
 import random
 from discord.ext import commands
 from datetime import date, datetime
+import yaml
 bot = commands.Bot(command_prefix="!", description="Devant la librarie")
-# you understand pretty explicit
 
 mon4A = ["Géographie", "Math", "Sciences", "Anglais", "Français","Religion","Anglais", "Math"]
 tue4A = ["Histoire", "Religion", "Option fils de pute", "Math", "Math", "Langue 2", "Info/étude", "Info/étude"]
@@ -130,31 +130,35 @@ async def timetable (ctx):
     minute = int(nowPreciseDate.strftime("%M"))  # get minutes as an int
     await ctx.send(sendHoraire(ctx,minute,hour,current_day))
 
-args = "" # I define args to use it in "horairejour"
+args = "" # I define a str var args to use in "horairejour"
 
-jour_semaine = ["lundi", "mardi", "mercredi", "jeudi", "vendredi", "samedi", "dimanche"]
+jour_semaine = ["lundi", "mardi", "mercredi", "jeudi", "vendredi", "samedi", "dimanche"] #I define each day of the week
 @commands.guild_only()
 @bot.command(name="horairejour")
 async def timetableTomorow (ctx, args: str):
     i = 0 #i = increment
-    if(jour_semaine[5] == args or jour_semaine[6] == args): await ctx.send("Sérieux ? **Grosse merde**")
+    if(jour_semaine[5] == args or jour_semaine[6] == args):
+        await ctx.send("Où est-ce que tu vois qu'on à école ? **T'es con ou quoi ?**", file=discord.File("D:\Bureau\slt.jpg"))
     else:
         for i in range(5): #I'm checking each possible day of the week
-            if (args.lower() == jour_semaine[i]): 
-                args_to_int = i
-                await ctx.send(sendHoraire(ctx,0,6,args_to_int))
-                i += 1
-            elif (i > 5): await ctx.send("T'es vraiment **trop con**") 
+            i += 1
+            #await ctx.send("DEBUG : nb du for : "+str(i)+" jour insere : "+args+" jour vérifié : "+jour_semaine[i-1]) Debug functionnality (Do not use if you don't know what you're doing)
+            if (args.lower() == jour_semaine[i-1]): 
+                await ctx.send(sendHoraire(ctx,0,6,i-1))
+                break
+            elif(i == 5 and jour_semaine[4] != args): await ctx.send("Alors on connait pas les jours de la semaine ?")
+            
+            
             
 
-@bot.command(aliases=["orraire","horraire","orairre","horairre","horzire","orair","oraire","horair","haraire","horarie","hroaire","hraire",
+@bot.command(aliases=["orraire","horraire","orairre","horairre","horzire","orair","oraire","horair","haraire","horarie","hroaire","hraire","hauraire","haurair","haurer"
 "orrairejour","horrairejour","orairrejour","horairrejour","horzirejour","orairjour","orairejour","horairjour","harairejour","horariejour","hroairejour","hrairefour"])
 async def x (ctx):
     insultes = ["Apprend à écrire gros con","**issou**","Tu écris comme Prem","Y'a de l'autisme dans l'air la non ?",
                 "quelle orthographe dis donc","Pire que Manon Boegen","ew","https://www.jaitoutcompris.com/rubriques/dictionnaire.php",
-                "www.amazon.fr/Dictionnaire-Robert-Junior-illustré-CE-CM-6e/dp/2321015160/ref=sr_1_1",
+                "https://www.amazon.fr/Dictionnaire-Robert-Junior-illustré-CE-CM-6e/dp/2321015160/ref=sr_1_1",
                 "Tu sais combien de temps ça ma pris pour codé tout ça ? moins que ça t'aurait pris pour corriger ce message",
-                "Je te chie dessus depuis l'espace","kinda cringe bro","Mec tu me fais quoi là"]
+                "Je te chie dessus depuis l'espace","kinda cringe bro","Mec tu me fais quoi là","Apprend"]
     await ctx.send(random.choice(insultes))
 
-bot.run("")
+bot.run("NzY0NDk0ODAyMjQyNzY0ODQw.X4HFRA.1D-yq3dlvxo1XVFAaArR-NVAR_w")

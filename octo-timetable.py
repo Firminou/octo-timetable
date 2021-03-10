@@ -140,7 +140,7 @@ jour_semaine = ["lundi", "mardi", "mercredi", "jeudi", "vendredi", "samedi", "di
 async def timetableTomorow (ctx, args: str):
     i = 0 #i = increment
     if(jour_semaine[5] == args or jour_semaine[6] == args):
-        await ctx.send("Où est-ce que tu vois qu'on à école ? **T'es con ou quoi ?**", file=discord.File("D:\Bureau\slt.jpg"))
+        await ctx.send("Où est-ce que tu vois qu'on à école ? **T'es con ou quoi ?**", file=discord.File("Assets/images/myschoolweek_fr.jpg"))
     else:
         for i in range(5): #I'm checking each possible day of the week
             i += 1

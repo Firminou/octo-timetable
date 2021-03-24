@@ -171,4 +171,4 @@ async def x (ctx):
                 "Je te chie dessus depuis l'espace","kinda cringe bro","Mec tu me fais quoi là","Apprend"]
     await ctx.send(random.choice(insultes))
 
-bot.run("NzY0NDk0ODAyMjQyNzY0ODQw.X4HFRA.M59Z9eyrLcF07Np4CmTg_URFvZQ")
+bot.run("")

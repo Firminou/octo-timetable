@@ -58,11 +58,14 @@ fri4G = ["AHV", "IVP", "IVP", "Math", "Français", "Français", "Anglais", "Étu
 the4G = [mon4G, tue4G, wed4G, thu4G, fri4G, mon4G, mon4G]
 schoolTimetableArray = [the4A, the4B, the4D, the4E, the4F, the4G]
 
+jour_semaine = ["lundi", "mardi", "mercredi", "jeudi", "vendredi", "samedi",
+                "dimanche"]  # I define each day of the week
+
+
 @bot.event
 async def on_ready():  # print in the console when bot wake up
     print("[INFO] Bot started and initialized as excepted")
     await bot.change_presence(activity=discord.Game("manger des bambous là"))
-
 
 def pourcentage(mode):
     nowPreciseDate = datetime.now()  # get exact date with seconds
@@ -113,19 +116,19 @@ def sendHoraire(ctx, minute, hour, current_day):
         if period != 0:
             period -= 1
     if debug == True:
-        print("[DEBUG] Jour:", current_day, "Periode:", period, "Heure", hour, "Minutes:", minute, "Classe:",
-              schoolRole)  # made for debug
+        print("[DEBUG] Day:", current_day, "Period:", period, "Hour:", hour, "Minute:", minute, "ClassRole:",
+              schoolRole)
 
     preciseDate = datetime.now()  # get a reference of hours/minutes now to have the right value
     for jour in range(7):  # because there are 7 day in a week
         if current_day == jour:  # this way i use the day i got as an useful variable
             theLeftOfUs = -1  # value to increment to give us the remaining courses
-            toPrint = ("```Ton Horaire :")
+            toPrint = ("```Horaire "+classesFromConfig[schoolRole]+" "+jour_semaine[current_day].capitalize()+ " :\n")
             for heurePeriod in range(8 - period):  # because i only want the bot to print today's remaining courses
                 theLeftOfUs += 1
                 toPrint += ("\n" + str(heurePeriod + period + 1) + "h " + schoolTimetableArray[schoolRole][current_day][
                     period + theLeftOfUs])
-            toPrint += ("\n" + pourcentage(0) + "% de la journée scolaire est écoulé et " + pourcentage(
+            toPrint += ("\n\n" + pourcentage(0) + "% de la journée scolaire est écoulé et " + pourcentage(
                 1) + "% de la journée est écoulé```")
             return toPrint
 
@@ -133,38 +136,71 @@ def sendHoraire(ctx, minute, hour, current_day):
 @commands.guild_only()
 @bot.command(name="horaire")
 async def timetable(ctx, jour=None):
-    print(jour)
-    jour_semaine = ["lundi", "mardi", "mercredi", "jeudi", "vendredi", "samedi",
-                    "dimanche"]  # I define each day of the week
-
     if jour == None:
         dayWeek = date.today()  # get day as a string
         current_day = date.weekday(dayWeek)  # get day in integrer 0=monday,1=tuesday,...
         nowPreciseDate = datetime.now()  # get exact date with seconds
         await ctx.send(
             sendHoraire(ctx, int(nowPreciseDate.strftime("%M")), int(nowPreciseDate.strftime("%H")), current_day))
+        if debug == True:   
+            print("[DEBUG] !horaire : Today timetable printed in channel ID "+str(ctx.channel.id))
     else:
         for x in range(len(jour_semaine)):
             if jour == jour_semaine[x]:
                 if x == 5 or x == 6:
                     await ctx.send("Où est-ce que tu vois qu'on à école ? **T'es con ou quoi ?**",
                                    file=discord.File("Assets\images\myschoolweek_fr.jpg"))
+                    print("[DEBUG] !horaire : "+jour_semaine[x]+" joke printed in channel ID "+str(ctx.channel.id))
                 else:
                     await ctx.send(sendHoraire(ctx, 0, 6, x))
+                    print("[DEBUG] !horaire : "+jour_semaine[x]+" timetable printed in channel ID "+str(ctx.channel.id))
+
+@bot.command(name="mails")
+async def Mails(ctx):
+    for a in range(1):
+        RandomMail = str(random.randrange(1, 12))
+    await ctx.send(file=discord.File("Assets\images\MailsDB\MailZeippen"+RandomMail+".png"))
+    if debug == True:
+        print("[DEBUG] !mails : Image "+RandomMail+" printed in channel ID "+str(ctx.channel.id))
+
+@bot.command(name="bamboula")
+async def Bamboula(ctx):
+    await ctx.send("https://youtu.be/Agtyo-Rem3Q")
+
+@bot.command(name="love")
+async def Love(ctx, Personne1, Personne2):
+    printIt = 1
+
+    wordBanList = ['@everyone', '@here', '<@&763489250162507809>','<@&777564025432965121>','<@&822200827347075132>',
+                   '<@&763815680306184242>','<@&764422266560839680<','<@&763815728972300338>','<@&763815728972300338>'
+                   '<@&763815228323528725>','<@&763815784904261632>','<@&764422166116171806>','<@&764422057353936897>',
+                   '<@&804807279043674143>','<@&828664814678179861>','<@&823562218095640646>','<@&823638574809219163>']
+    LoveRate = str(random.randrange(0, 100))
+
+    for y in range(len(wordBanList)):
+        if(Personne1 == wordBanList[y] or Personne2 == wordBanList[y]):
+            printIt = 0
+
+    if(printIt == 0):
+        await ctx.send("Tu t'es pris pour qui ?")
+        if debug == True:
+            print("[DEBUG] !love : Someone tried to use a banned word !")
+    else:
+        await ctx.send("L'amour entre **"+Personne1+"** et **"+Personne2+"** est de **"+LoveRate+"%** <:flushed:830502924479758356>")
+        if debug == True:
+            print("[DEBUG] !love : The love rate ("+LoveRate+"%) between "+Personne1+" and "+Personne2+" has been printed in channel ID "+str(ctx.channel.id))
 
 @bot.command(
     aliases=["orraire", "horraire", "orairre", "horairre", "horzire", "orair", "oraire", "horair", "haraire", "horarie",
-             "hroaire", "hraire", "hauraire", "haurair", "haurer","orrairejour", "horrairejour", "orairrejour",
-             "horairrejour", "horzirejour", "orairjour", "orairejour", "horairjour", "harairejour", "horariejour", "hroairejour",
-             "hrairefour"])
-async def x(ctx):
+             "hroaire", "hraire", "hauraire", "haurair", "haurer"])
+async def Insultes(ctx):
     insultes = ["Apprend à écrire gros con", "**issou**", "Tu écris comme Prem", "Y'a de l'autisme dans l'air la non ?",
                 "quelle orthographe dis donc", "Pire que Manon Boegen", "ew",
                 "https://www.jaitoutcompris.com/rubriques/dictionnaire.php",
                 "https://www.amazon.fr/Dictionnaire-Robert-Junior-illustré-CE-CM-6e/dp/2321015160/ref=sr_1_1",
                 "Tu sais combien de temps ça ma pris pour codé tout ça ? moins que ça t'aurait pris pour corriger ce message",
                 "Je te chie dessus depuis l'espace", "kinda cringe bro", "Mec tu me fais quoi là", "Apprend","Hérétique!!!",
-                "J'arrive te niquer prépare ton cul"]
+                "J'arrive te niquer prépare ton cul", "Tu sais même pas écrire une commande"]
     await ctx.send(random.choice(insultes))
 
 bot.run("")

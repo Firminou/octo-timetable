@@ -155,7 +155,6 @@ async def timetable(ctx, jour=None):
                     await ctx.send(sendHoraire(ctx, 0, 6, x))
                     print("[DEBUG] !horaire : "+jour_semaine[x]+" timetable printed in channel ID "+str(ctx.channel.id))
 
-
 @bot.command(name="mails")
 async def Mails(ctx):
     for a in range(1):
@@ -164,12 +163,36 @@ async def Mails(ctx):
     if debug == True:
         print("[DEBUG] !mails : Image "+RandomMail+" printed in channel ID "+str(ctx.channel.id))
 
+@bot.command(name="bamboula")
+async def Bamboula(ctx):
+    await ctx.send("https://youtu.be/Agtyo-Rem3Q")
+
+@bot.command(name="love")
+async def Love(ctx, Personne1, Personne2):
+    printIt = 1
+
+    wordBanList = ['@everyone', '@here', '<@&763489250162507809>','<@&777564025432965121>','<@&822200827347075132>',
+                   '<@&763815680306184242>','<@&764422266560839680<','<@&763815728972300338>','<@&763815728972300338>'
+                   '<@&763815228323528725>','<@&763815784904261632>','<@&764422166116171806>','<@&764422057353936897>',
+                   '<@&804807279043674143>','<@&828664814678179861>','<@&823562218095640646>','<@&823638574809219163>']
+    LoveRate = str(random.randrange(0, 100))
+
+    for y in range(len(wordBanList)):
+        if(Personne1 == wordBanList[y] or Personne2 == wordBanList[y]):
+            printIt = 0
+
+    if(printIt == 0):
+        await ctx.send("Tu t'es pris pour qui ?")
+        if debug == True:
+            print("[DEBUG] !love : Someone tried to use a banned word !")
+    else:
+        await ctx.send("L'amour entre **"+Personne1+"** et **"+Personne2+"** est de **"+LoveRate+"%** <:flushed:830502924479758356>")
+        if debug == True:
+            print("[DEBUG] !love : The love rate ("+LoveRate+"%) between "+Personne1+" and "+Personne2+" has been printed in channel ID "+str(ctx.channel.id))
 
 @bot.command(
     aliases=["orraire", "horraire", "orairre", "horairre", "horzire", "orair", "oraire", "horair", "haraire", "horarie",
-             "hroaire", "hraire", "hauraire", "haurair", "haurer","orrairejour", "horrairejour", "orairrejour",
-             "horairrejour", "horzirejour", "orairjour", "orairejour", "horairjour", "harairejour", "horariejour", "hroairejour",
-             "hrairefour"])
+             "hroaire", "hraire", "hauraire", "haurair", "haurer"])
 async def Insultes(ctx):
     insultes = ["Apprend à écrire gros con", "**issou**", "Tu écris comme Prem", "Y'a de l'autisme dans l'air la non ?",
                 "quelle orthographe dis donc", "Pire que Manon Boegen", "ew",
@@ -177,7 +200,7 @@ async def Insultes(ctx):
                 "https://www.amazon.fr/Dictionnaire-Robert-Junior-illustré-CE-CM-6e/dp/2321015160/ref=sr_1_1",
                 "Tu sais combien de temps ça ma pris pour codé tout ça ? moins que ça t'aurait pris pour corriger ce message",
                 "Je te chie dessus depuis l'espace", "kinda cringe bro", "Mec tu me fais quoi là", "Apprend","Hérétique!!!",
-                "J'arrive te niquer prépare ton cul", "Tu sais même pas écrire "]
+                "J'arrive te niquer prépare ton cul", "Tu sais même pas écrire une commande"]
     await ctx.send(random.choice(insultes))
 
 bot.run("")

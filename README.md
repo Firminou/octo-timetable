@@ -33,4 +33,4 @@ Octo-Timetable use these parameters to show the courses
 - !insultes : Say a random insult
 
 # Installation and configuration
-## Refer to the [wiki](https://github.com/Firminou/octo-timetable/wiki) 
+Refer to the [wiki](https://github.com/Firminou/octo-timetable/wiki) 

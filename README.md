@@ -24,13 +24,18 @@ Octo-Timetable use these parameters to show the courses
 # Miscellaneous commands
 
 - !horaire "day" : Give the schedule of the inserted day
+
 - !mails : Show a random e-mail from our school headmistress (we hate her)
 
 - !love : Test the loverate between 2 persons (It is the most used command in our server by far)
+
+- !predict : Fais une prédiction
 
 - !bamboula : Send a video of an English teacher saying "Bamboula"
 
 - !insultes : Say a random insult
 
+- !dumont : Same as !tempmute 3m
+
 # Installation and configuration
-Refer to the [wiki](https://github.com/Firminou/octo-timetable/wiki) 
+Refer to the [wiki](https://github.com/Firminou/octo-timetable/wiki)

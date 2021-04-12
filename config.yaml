@@ -5,10 +5,10 @@
 # 3 Hours of courses - 15min of break - 2 Hours of courses - 1 Hour of lunchtime - 3 Hour of courses
 #
 #
-classes: #insert the (exact) names of your classes roles
-    - 4A
-    - 4B
-    - 4D
+classes: #insert the EXACT names of your classes roles 
+    - 4A #class1
+    - 4B #class2
+    - 4D #...
     - 4E
     - 4F
     - 4G

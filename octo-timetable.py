@@ -68,23 +68,24 @@ jour_semaine = ["lundi", "mardi", "mercredi", "jeudi", "vendredi", "samedi",
 
 @bot.event
 async def on_ready():  # print in the console when bot wake up
-    print("[INFO] Bot initialized as excepted (botVersion = "+botVersion+")")
-    await bot.change_presence(activity=discord.Game("!dumont"))
+    print(f"[INFO] Bot initialized as excepted (botVersion = {botVersion})")
+    await bot.change_presence(activity=discord.Game("combats les arabes"))
 
 def pourcentage(mode):
     nowPreciseDate = datetime.now()  # get exact date with seconds
-    toPourcent = (int(nowPreciseDate.strftime("%H"))) * 60 + int(nowPreciseDate.strftime("%M"))
+    toPourcent = (int(nowPreciseDate.strftime("%H"))) * 60 + \
+        int(nowPreciseDate.strftime("%M"))
     if mode == 0:
         if toPourcent <= 480:
-            return str(0)
+            return 0
         elif 480 > toPourcent or toPourcent < 955:
             toPourcent = (toPourcent - 480) / 475 * 100
-            return str(round(toPourcent, 1))
+            return round(toPourcent, 1)
         else:
-            return str(100)
+            return 100
     elif mode == 1:
-        return str(
-            round((((int(nowPreciseDate.strftime("%H"))) * 60) + (int(nowPreciseDate.strftime("%M")))) / 1440 * 100, 1))
+        return round((((int(nowPreciseDate.strftime("%H"))) * 60) + \
+            (int(nowPreciseDate.strftime("%M")))) / 1440 * 100, 1)
 
 def sendHoraire(ctx, minute, hour, currentDay):
     schoolRole = 0  # need to be referenced before assignement
@@ -119,21 +120,22 @@ def sendHoraire(ctx, minute, hour, currentDay):
         if period != 0:
             period -= 1
     if debug == True:
-        print("[DEBUG] Day:", currentDay, "Period:", period, "Hour:", hour, "Minute:", minute, "ClassRole:",
-              schoolRole)
+        print(f"[DEBUG] Day: {currentDay} Period: {period} Hour: {hour} Minute: {minute} ClassRole: {schoolRole}")
 
     preciseDate = datetime.now()  # get a reference of hours/minutes now to have the right value
     for jour in range(7):  # because there are 7 day in a week
         if currentDay == jour:  # this way i use the day i got as an useful variable
             theLeftOfUs = -1  # value to increment to give us the remaining courses
-            toPrint = ("```Horaire "+classesFromConfig[schoolRole]+" "+jour_semaine[currentDay].capitalize()+ " :\n")
+            titleEmbed = f"Horaire {jour_semaine[currentDay].capitalize()}\n"
+            descriptionEmbed = ""
             for heurePeriod in range(8 - period):  # because i only want the bot to print today's remaining courses
                 theLeftOfUs += 1
-                toPrint += ("\n" + str(heurePeriod + period + 1) + "h " + schoolTimetableArray[schoolRole][currentDay][
-                    period + theLeftOfUs])
-            toPrint += ("\n\n" + pourcentage(0) + "% de la journée scolaire est écoulé et " + pourcentage(
-                1) + "% de la journée est écoulé```")
-            return toPrint
+                descriptionEmbed += (f"\n {heurePeriod + period + 1}h {schoolTimetableArray[schoolRole][currentDay][period + theLeftOfUs]}")
+            descriptionEmbed += (f"\n\n{pourcentage(0)}% de la journée scolaire est écoulé et {pourcentage(1)}% de la journée est écoulé")
+            embed=discord.Embed(title=titleEmbed, description=descriptionEmbed, color=0x03c2fc)
+            embed.set_author(name=f"{ctx.message.author.name} ({classesFromConfig[schoolRole]})", icon_url=ctx.message.author.avatar_url)
+            embed.set_footer(text="Powered by KIYU Industries")
+            return embed
 
 @bot.command(name="horaire")
 async def timetable(ctx, jour=None):
@@ -141,88 +143,85 @@ async def timetable(ctx, jour=None):
         dayWeek = date.today()  # get day as a string
         currentDay = date.weekday(dayWeek)  # get day in integrer 0=monday,1=tuesday,...
         nowPreciseDate = datetime.now()  # get exact date with seconds
-        await ctx.send(
-            sendHoraire(ctx, int(nowPreciseDate.strftime("%M")), int(nowPreciseDate.strftime("%H")), currentDay))
+        await ctx.send(embed=sendHoraire(ctx, int(nowPreciseDate.strftime("%M")), int(nowPreciseDate.strftime("%H")), currentDay))
         if debug == True:
-            print("[DEBUG] !horaire : Today timetable printed in channel ID "+str(ctx.channel.id))
+            print(f"[DEBUG] !horaire : Today timetable printed in channel ID {ctx.channel.id}")
     else:
         for x in range(len(jour_semaine)):
             if jour == jour_semaine[x]:
                 if x == 5 or x == 6:
                     await ctx.send("Où est-ce que tu vois qu'on à école ? **T'es con ou quoi ?**",
                                    file=discord.File("Assets\images\myschoolweek_fr.jpg"))
-                    print("[DEBUG] !horaire : "+jour_semaine[x]+" joke printed in channel ID "+str(ctx.channel.id))
+                    print(f"[DEBUG] !horaire : {jour_semaine[x]} joke printed in channel ID {ctx.channel.id}")
                 else:
-                    await ctx.send(sendHoraire(ctx, 0, 6, x))
-                    print("[DEBUG] !horaire : "+jour_semaine[x]+" timetable printed in channel ID "+str(ctx.channel.id))
-
-@bot.command(name="mails")
-async def mails(ctx):
-    for a in range(1):
-        RandomMail = str(random.randrange(1, 12))
-    await ctx.send(file=discord.File("Assets\images\MailsDB\MailZeippen"+RandomMail+".png"))
-    if debug == True:
-        print("[DEBUG] !mails : Image "+RandomMail+" printed in channel ID "+str(ctx.channel.id))
+                    embedToPrint = sendHoraire(ctx, 0, 6, x)
+                    await ctx.send(embed=embedToPrint)
+                    print(f"[DEBUG] !horaire : {jour_semaine[x]} timetable printed in channel ID {ctx.channel.id}")
     await asyncio.sleep(5)
     await ctx.message.delete()
 
-@bot.command(name="bamboula")
+@bot.command(name="mails")
+async def mails(ctx):
+    RandomMail = random.randrange(1, 12)
+    await ctx.send(file=discord.File(f"Assets\images\MailsDB\MailZeippen{RandomMail}.png"))
+    if debug:
+        print(f"[DEBUG] !mails : Image {RandomMail} printed in channel ID {ctx.channel.id}")
+    await asyncio.sleep(5)
+    await ctx.message.delete()
+
+@bot.command(name="bamboula", aliases=["b"])
 async def bamboula(ctx):
     await ctx.send("https://youtu.be/Agtyo-Rem3Q")
+    if debug == True:
+        print(f"[DEBUG] !bamboula in channel ID {ctx.channel.id}")
     await asyncio.sleep(5)
     await ctx.message.delete()
 
 @bot.command(name="love", aliases=["l"])
 async def love(ctx, Personne1, Personne2):
-    if ctx.message.channel.id != 763352957579690018:
-        printIt = 1
-        wordBanList = ['@everyone', '@here', '<@&763489250162507809>','<@&777564025432965121>','<@&822200827347075132>',
-                       '<@&763815680306184242>','<@&764422266560839680<','<@&763815728972300338>','<@&763815728972300338>',
-                       '<@&763815228323528725>','<@&763815784904261632>','<@&764422166116171806>','<@&764422057353936897>',
-                       '<@&804807279043674143>','<@&828664814678179861>','<@&823562218095640646>','<@&823638574809219163>']
-        LoveRate = str(random.randrange(0, 100))
-        for y in range(len(wordBanList)):
-            if(Personne1 == wordBanList[y] or Personne2 == wordBanList[y]):
-                printIt = 0
-
-        if(printIt == 0):
-            await ctx.send("Tu t'es pris pour qui ?")
-            if debug == True:
-                print("[DEBUG] !love : Someone tried to use a banned word !")
-        else:
-            await ctx.send("L'amour entre **"+Personne1+"** et **"+Personne2+"** est de **"+LoveRate+"%** <:flushed:830502924479758356>")
-            if debug == True:
-                print("[DEBUG] !love : The love rate ("+LoveRate+"%) between "+Personne1+" and "+Personne2+" has been printed in channel ID "+str(ctx.channel.id))
-    else:
+    if ctx.message.channel.id == 763352957579690018:
         botChannel = discord.utils.get(ctx.guild.channels, id=768194273970880533)
-        messageBot = await ctx.send("Va faire cette commande dans "+botChannel.mention+" ou je te soulève <:rage:831149184895811614>")
+        messageBot = await ctx.send(f"Va faire cette commande dans {botChannel.mention} ou je te soulève <:rage:831149184895811614>") 
         await asyncio.sleep(5)
         await ctx.message.delete()
         await messageBot.delete()
+        return
+    wordBanList = {'@everyone', '@here', '<@&763489250162507809>','<@&777564025432965121>','<@&822200827347075132>',
+                    '<@&763815680306184242>','<@&764422266560839680<','<@&763815728972300338>','<@&763815728972300338>',
+                    '<@&763815228323528725>','<@&763815784904261632>','<@&764422166116171806>','<@&764422057353936897>',
+                    '<@&804807279043674143>','<@&828664814678179861>','<@&823562218095640646>','<@&823638574809219163>'}
+    LoveRate = random.randrange(0, 100)
+    if Personne1 in wordBanList or Personne2 in wordBanList:
+        await ctx.send(f"Tu t'es pris pour qui ? {ctx.message.author.mention}")
+        if debug:
+            print("[DEBUG] !love : Someone tried to use a banned word !")     
+    else:
+        await ctx.send(f"L'amour entre **{Personne1}** et **{Personne2}** est de **{LoveRate}%** <:flushed:830502924479758356>") 
+        if debug:
+            print(f"[DEBUG] !love : The love rate ({LoveRate}%) between {Personne1} and {Personne2} has been printed in channel ID {ctx.channel.id}") 
+        
 
-@bot.command(name="dumont")
+@bot.command(name="dumont", aliases=["tempmute"])
 async def dumont(ctx, userArgs: discord.Member = None):
 
     roleAdmin = discord.utils.get(ctx.guild.roles, name="*")
     roleMute = discord.utils.get(ctx.guild.roles, name="Mute")
     channelRetenue = discord.utils.get(ctx.guild.channels, id=769125453314261002)
 
-    authorizedMembers = [225282512438558720]
+    authorizedMembers = {225282512438558720}
     user = ctx.message.author
-
-    await ctx.message.delete()
     
     if userArgs != None:
-        for z in range(len(authorizedMembers)):
-            if authorizedMembers[z] == user.id or roleAdmin in ctx.author.roles:
-                user = userArgs
-                await ctx.send(user.mention+" vient de se faire envoyer en retenue par Mr Dumont! <:angry:830881956870357023>")
-            else:
-                await ctx.send("Tu t'es cru où ? "+user.mention+", va en retenue! <:angry:830881956870357023>")
+        if user.id in authorizedMembers or roleAdmin in ctx.author.roles:
+            user = userArgs
+            await ctx.send(f"{user.mention} vient de se faire envoyer en retenue par Mr Dumont pendant 3 minutes! <:angry:830881956870357023>")
+        else:
+            await ctx.send(f"Tu t'es cru où ? {user.mention}, va en retenue! <:angry:830881956870357023>")
     else:
-        await ctx.send(user.mention+" vient de se faire envoyer en retenue par Mr Dumont! <:angry:830881956870357023>")
+        await ctx.send(f"{user.mention} vient de se faire envoyer en retenue par Mr Dumont pendant 3 minutes! <:angry:830881956870357023>")
 
     await user.add_roles(roleMute)
+    await ctx.message.delete()
     if user.voice != None:
         await user.move_to(channelRetenue)
     await asyncio.sleep(180)
@@ -230,22 +229,21 @@ async def dumont(ctx, userArgs: discord.Member = None):
 
 @bot.command(name="predict", aliases=["p"])
 async def predict(ctx, args):
-    if ctx.message.channel.id != 763352957579690018:
-        predictE = "Prédiction <:crystal_ball:830965316468867082> : "
-
-        predictPhrases = ["Oui","Non", "Peut-Être <:thinking:830966162824888320>",
-                          "Je ne devrais peut-être pas le dire <:face_with_hand_over_mouth:831149509287084052>",
-                          "Sans aucun doute", "C'est probable", "Je ne pense pas", "Probablement pas"
-                          "Je ne suis pas sûr <:face_with_raised_eyebrow:831150009436995584>",
-                          "Il semblerait que oui", "Il semblerait que non...","La réponse pourrait vous choquer... "]
-        await ctx.send(predictE + "**"+random.choice(predictPhrases)+"**")
-
-    else:
+    if ctx.message.channel.id == 763352957579690018:
         botChannel = discord.utils.get(ctx.guild.channels, id=768194273970880533)
-        messageBot = await ctx.send("Va faire cette commande dans "+botChannel.mention+" ou je te soulève <:rage:831149184895811614>")
+        messageBot = await ctx.send(f"Va faire cette commande dans {botChannel.mention} ou je te soulève <:rage:831149184895811614>")
         await asyncio.sleep(5)
         await ctx.message.delete()
         await messageBot.delete()
+        return
+    predictE = "Prédiction <:crystal_ball:830965316468867082> : "
+
+    predictPhrases = ["Oui","Non", "Peut-Être <:thinking:830966162824888320>",
+                          "Je ne devrais peut-être pas le dire <:face_with_hand_over_mouth:831149509287084052>",
+                          "Sans aucun doute", "C'est probable", "Je ne pense pas", "Probablement pas",
+                          "Je ne suis pas sûr <:face_with_raised_eyebrow:831150009436995584>",
+                          "Il semblerait que oui", "Il semblerait que non...","La réponse pourrait vous choquer... "]
+    await ctx.send(predictE + "**"+random.choice(predictPhrases)+"**")
 
 @bot.command(name="insultes", aliases=["orraire", "horraire", "orairre", "horairre", "horzire", "orair", "oraire", "horair", "haraire", "horarie",
                                        "hroaire", "hraire", "hauraire", "haurair", "haurer"])
@@ -257,7 +255,7 @@ async def insultes(ctx):
                 "Tu sais combien de temps ça ma pris pour codé tout ça ? moins que ça t'aurait pris pour corriger ce message",
                 "Je te chie dessus depuis l'espace", "kinda cringe bro", "Mec tu me fais quoi là", "Apprend","Hérétique!!!",
                 "J'arrive te niquer prépare ton cul", "Tu sais même pas écrire une commande", "J'ai même plus envie de répondre",
-                "Pourquoi t'es encore sur ce discord, on t'a toujours ban ?", ""]
+                "Pourquoi t'es encore sur ce discord, on t'a toujours ban ?"]
     await ctx.send(random.choice(insultes))
 
-bot.run("NzY0NDk0ODAyMjQyNzY0ODQw.X4HFRA.8RVS8XdY-VhSJKn1HnIFAXhq8LY")
+bot.run("NzY0NDk0ODAyMjQyNzY0ODQw.X4HFRA.d8jey-2qHF-g5NE884mCn5eLLRk") # TODO TOKEN

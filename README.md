@@ -6,20 +6,22 @@ Octo-Timetable shows your timetable for your online courses
 
 - 4B Monday courses :  
 
-![4BMondayCoursesExample](https://i.imgur.com/IZBlM9M.jpg)
+![mondayCourses4B](https://user-images.githubusercontent.com/38604778/115145760-7aecc880-a053-11eb-991f-c4f4e1863b21.png)
+
 - 4D Monday courses : 
 
-‎![4DMondayCoursesExample](https://i.imgur.com/SpnCPIj.jpg)
+‎![mondayCourses4D](https://user-images.githubusercontent.com/38604778/115145767-893ae480-a053-11eb-9bec-779a4857c967.png)
 
 
 Octo-Timetable use these parameters to show the courses
 - Class roles :
 
-![ClassRolesExample](https://i.imgur.com/Xz5s5ew.jpeg)
+![ClassRolesExample](https://user-images.githubusercontent.com/38604778/115146344-62ca7880-a056-11eb-98ef-f5e47444c584.png)
 
-- Current time (Tuesday 13h23) :
 
-![CurrentTimeExample](https://i.imgur.com/x1SwMsk.jpeg)‎‎‎‎‎‎
+- Current time (Tuesday 00:28) :
+
+![CurrentTimeExample](https://user-images.githubusercontent.com/38604778/115146462-e6846500-a056-11eb-92ba-d95e45d48093.png)‎‎‎‎‎‎
 
 # Miscellaneous commands
 

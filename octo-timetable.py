@@ -7,7 +7,7 @@ import asyncio
 
 debug = False # to get more precise information in the log
 
-botVersion = "1"
+botVersion = "1.1.0"
 
 bot = commands.Bot(command_prefix="!")
 
@@ -84,7 +84,7 @@ def pourcentage(mode):
         else:
             return 100
     elif mode == 1:
-        return round((((int(nowPreciseDate.strftime("%H"))) * 60) + \
+        return round((((int(nowPreciseDate.strftime("%H"))) * 60) +
             (int(nowPreciseDate.strftime("%M")))) / 1440 * 100, 1)
 
 def sendHoraire(ctx, minute, hour, currentDay):
@@ -132,7 +132,7 @@ def sendHoraire(ctx, minute, hour, currentDay):
                 theLeftOfUs += 1
                 descriptionEmbed += (f"\n {heurePeriod + period + 1}h {schoolTimetableArray[schoolRole][currentDay][period + theLeftOfUs]}")
             descriptionEmbed += (f"\n\n{pourcentage(0)}% de la journée scolaire est écoulé et {pourcentage(1)}% de la journée est écoulé")
-            embed=discord.Embed(title=titleEmbed, description=descriptionEmbed, color=0x03c2fc)
+            embed=discord.Embed(title=titleEmbed, description=descriptionEmbed, color=0xf48224)
             embed.set_author(name=f"{ctx.message.author.name} ({classesFromConfig[schoolRole]})", icon_url=ctx.message.author.avatar_url)
             embed.set_footer(text="Powered by KIYU Industries")
             return embed
@@ -201,7 +201,7 @@ async def love(ctx, Personne1, Personne2):
             print(f"[DEBUG] !love : The love rate ({LoveRate}%) between {Personne1} and {Personne2} has been printed in channel ID {ctx.channel.id}") 
         
 
-@bot.command(name="dumont", aliases=["tempmute"])
+@bot.command(name="dumont", aliases=["tempmute", "fortnite", "michou"])
 async def dumont(ctx, userArgs: discord.Member = None):
 
     roleAdmin = discord.utils.get(ctx.guild.roles, name="*")
@@ -255,7 +255,16 @@ async def insultes(ctx):
                 "Tu sais combien de temps ça ma pris pour codé tout ça ? moins que ça t'aurait pris pour corriger ce message",
                 "Je te chie dessus depuis l'espace", "kinda cringe bro", "Mec tu me fais quoi là", "Apprend","Hérétique!!!",
                 "J'arrive te niquer prépare ton cul", "Tu sais même pas écrire une commande", "J'ai même plus envie de répondre",
-                "Pourquoi t'es encore sur ce discord, on t'a toujours ban ?"]
+                "Pourquoi t'es encore sur ce discord, on t'a toujours pas ban ?","**soupir**",
+                "CHALLENGE:JE FERME MA GUEULE PENDANT 24HEURES!!! (ça tourne mal!!)"]
     await ctx.send(random.choice(insultes))
 
-bot.run("NzY0NDk0ODAyMjQyNzY0ODQw.X4HFRA.d8jey-2qHF-g5NE884mCn5eLLRk") # TODO TOKEN
+@bot.command(name="github", aliases=["git"])
+async def git(ctx):
+    await ctx.send("https://github.com/Firminou/octo-timetable")
+    if debug:
+        print(f"[DEBUG] !github : repo sent")
+    await asyncio.sleep(3)
+    await ctx.message.delete()
+
+bot.run("") # TODO TOKEN

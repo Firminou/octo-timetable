@@ -1,8 +1,6 @@
 ﻿import discord
 import random
 from discord.ext import commands
-from discord.ext.commands import MissingPermissions
-from discord.ext.commands import BadArgument
 from datetime import datetime
 from datetime import date
 import yaml
@@ -10,9 +8,9 @@ import asyncio
 
 debug = False # to get more precise information in the log
 
-botVersion = "1.1.1"
+botVersion = "1.2.0"
 
-bot = commands.Bot(command_prefix="!")
+bot = commands.Bot(command_prefix=["!", "kiyu "])
 
 monClass1 = ["Géographie", "Math", "Sciences", "Anglais", "Français", "Religion", "Anglais", "Math"]
 tueClass1 = ["Histoire", "Religion", "Option (je sais pas mec)", "Math", "Math", "Langue 2", "Informatique/Étude",
@@ -73,6 +71,7 @@ jour_semaine = ["lundi", "mardi", "mercredi", "jeudi", "vendredi", "samedi"
 async def on_ready():  # print in the console when bot wake up
     print(f"[INFO] Bot initialized as excepted (botVersion = {botVersion})")
     await bot.change_presence(activity=discord.Game("Affronte les arabes"))
+
 
 @bot.event
 async def on_command_error(ctx, error):
@@ -140,10 +139,9 @@ def sendHoraire(ctx, minute, hour, currentDay): # TODO REWRITE sendHoraire
     if debug == True:
         print(f"[DEBUG] Day: {currentDay} Period: {period} Hour: {hour} Minute: {minute} ClassRole: {schoolRole}")
 
-    preciseDate = datetime.now()  # get a reference of hours/minutes now to have the right value
     for jour in range(7):  # because there are 7 day in a week
         if currentDay == jour:  # this way i use the day i got as an useful variable
-            theLeftOfUs = -1  # value to increment to give us the remaining courses
+            theLeftOfUs: int = -1  # value to increment to give us the remaining courses
             titleEmbed = f"Horaire {jour_semaine[currentDay].capitalize()}\n"
             descriptionEmbed = ""
             for heurePeriod in range(8 - period):  # because i only want the bot to print today's remaining courses
@@ -167,7 +165,7 @@ async def timetable(ctx, jour=None):
         nowPreciseDate = datetime.now()  # get exact date with seconds
         await ctx.send(
             embed=sendHoraire(ctx, int(nowPreciseDate.strftime("%M")), int(nowPreciseDate.strftime("%H")), currentDay))
-        if debug == True:
+        if debug:
             print(f"[DEBUG] !horaire : Today timetable printed in channel ID {ctx.channel.id}")
     else:
         for x in range(len(jour_semaine)):
@@ -197,6 +195,7 @@ async def mails(ctx):
     await asyncio.sleep(5)
     await ctx.message.delete()
 
+
 @bot.command(name="bamboula", aliases=["b"])
 async def bamboula(ctx):
     await ctx.send("https://youtu.be/Agtyo-Rem3Q")
@@ -204,6 +203,7 @@ async def bamboula(ctx):
         print(f"[DEBUG] !bamboula in channel ID {ctx.channel.id}")
     await asyncio.sleep(5)
     await ctx.message.delete()
+
 
 @bot.command(name="love", aliases=["l"])
 async def love(ctx, Personne1, Personne2):
@@ -241,7 +241,7 @@ async def love(ctx, Personne1, Personne2):
             f" and {Personne2} has been printed in channel ID {ctx.channel.id}"))
 
 
-@bot.command(name="dumont", aliases=["tempmute", "fortnite", "michou"])
+@bot.command(name="dumont", aliases=["tempmute", "fortnite", "michou", "brawlstars"])
 async def dumont(ctx, userArgs: discord.Member = None):
 
     admin_role = discord.utils.get(ctx.guild.roles, name="*")
@@ -296,6 +296,7 @@ async def predict(ctx, args):
         "La réponse pourrait vous choquer... "]
     await ctx.send(predictE + "**"+random.choice(predictPhrases)+"**")
 
+
 @bot.command(name="join")
 async def join(ctx):
     channel = ctx.author.voice.channel
@@ -310,6 +311,7 @@ async def leave(ctx):
         await ctx.send(
             ("Tu n'as pas la permission d'exécuter cette commande,",
             f"{ctx.author.mention}"))
+
 
 @bot.command(name='spam')
 #@commands.has_guild_permissions(manage_messages=True)
@@ -347,9 +349,6 @@ async def spam(ctx, user: discord.User, num, *, message=None):
         await ctx.send(f'{user.mention} {message}')
     await ctx.message.delete()
 
-        
-
-
 
 @bot.command(name="insultes",
     aliases=["orraire", "horraire", "orairre", "horairre", "horzire", "orair",
@@ -373,12 +372,52 @@ async def insultes(ctx):
         "**soupir**","CHALLENGE:JE FERME MA GUEULE PENDANT 24HEURES!!! (ça tourne mal!!)"]
     await ctx.send(random.choice(insultes))
 
+
 @bot.command(name="github", aliases=["git"])
 async def git(ctx):
     await ctx.send("https://github.com/Firminou/octo-timetable")
     if debug:
         print(f"[DEBUG] !github : repo sent")
     await asyncio.sleep(3)
+    await ctx.message.delete()
+
+
+@bot.command(name="réponse",aliases=["reponse", "raiponse"])
+async def reponse(ctx, *,text):
+    await ctx.send(text)
+    await ctx.message.delete()
+
+@bot.command(name="sarcasme",aliases=["majuscule", "maj", "sarcasm"])
+async def sarcasm(ctx, *,sentence):
+    #/!\ I DID NOT WRITE THIS CODE HERE IS THE GITHUB REPO FORM WHERE IT COME FROM
+    #https://github.com/peterlravn/My-projects
+    new_sentence = ""
+    number = 0  # Dummy number for tracking
+
+    for letter in sentence.lower():
+        if len(new_sentence) < 2:  # Creates the first two letter
+            random_number = random.randint(0, 1)  # This randomly decides if the letter should be upper or lowercase
+            if random_number == 0:
+                new_sentence += letter.upper()
+            else:
+                new_sentence += letter
+        else:
+            if (new_sentence[number - 2].isupper() and new_sentence[number - 1].isupper() or new_sentence[
+                number - 2].islower() and new_sentence[number - 1].islower()) == True:
+                # Checks if the two letters before are both upper or lowercase
+                if new_sentence[number - 1].isupper():  # Makes the next letter the opposite of the letter before
+                    new_sentence += letter.lower()
+                else:
+                    new_sentence += letter.upper()
+            else:
+                random_number = random.randint(0, 1)
+                if random_number == 0:
+                    new_sentence += letter.upper()
+                else:
+                    new_sentence += letter
+
+        number += 1  # Add one more to the tracking
+    await ctx.send(new_sentence)
     await ctx.message.delete()
 
 bot.run("")

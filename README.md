@@ -39,5 +39,9 @@ Octo-Timetable use these parameters to show the courses
 
 - !dumont : Same as !tempmute 3m
 
+- !réponse : Send the lessage you send while removing yours
+
+- !maj : Same as Réponse but some letter are randomly uppercase/lowercase 
+
 # Installation and configuration
 Refer to the [wiki](https://github.com/Firminou/octo-timetable/wiki)

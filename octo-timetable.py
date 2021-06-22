@@ -8,13 +8,13 @@ import asyncio
 
 debug = False # to get more precise information in the log
 botVersion = '1.2.1'
-bot = commands.Bot(command_prefix=["!", "kiyu ", 'gros con'])
+bot = commands.Bot(command_prefix=["!", "kiyu ", 'gros con '])
 
 
 @bot.event
 async def on_ready():  # print in the console when bot wake up
     print(f"[INFO] Bot initialized as excepted (botVersion = {botVersion})")
-    await bot.change_presence(activity=discord.Game("Affronte les arabes"))
+    await bot.change_presence(activity=discord.Game("regarde Beastars"))
 
 
 @bot.event

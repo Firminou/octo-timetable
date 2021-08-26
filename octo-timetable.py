@@ -59,4 +59,4 @@ async def status(ctx, *, status):
     await ctx.message.delete(delay=5)
 
 
-bot.run('ODM4MTIyNTkyMzM3Nzg5MDE5.YI2gfQ.3SIeeaOy-FWysNv_wCeCj1cIoTM')
+bot.run('')
